@@ -11,6 +11,11 @@ const Container = styled.div`
   text-align: center;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
   overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  ::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
 `;
 
 class History extends React.Component {

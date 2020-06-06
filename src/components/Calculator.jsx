@@ -14,7 +14,7 @@ const Container = styled.div`
 
 const Box = styled.div`
   display: inline-block;
-  width: 280px;
+  width: 270px;
   height: 65px;
   padding: 10px;
   border: 2px solid #000;
@@ -56,7 +56,7 @@ class Calculator extends React.Component {
       },
       "√": () => {
         let result = Math.sqrt(evalFunc(displayValue.replace("÷", "/").replace("×", "*")));
-        history.push({displayValue: "√"+displayValue, result});
+        history.splice(0, 0, {displayValue: "√("+displayValue+")", result});
         this.setState({ displayValue: result, history: [...history] })
       },
       "÷": () => {
@@ -84,7 +84,7 @@ class Calculator extends React.Component {
           displayValue = displayValue.substr(0, displayValue.length - 1);
         } else if (lastChar !== "") {
           let result = evalFunc(displayValue.replace("÷", "/").replace("×", "*"));
-          history.push({displayValue: displayValue, result});
+          history.splice(0, 0, {displayValue: displayValue, result});
           displayValue = result;
         }
         this.setState({ displayValue, history: [...history] });
