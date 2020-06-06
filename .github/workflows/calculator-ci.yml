@@ -27,4 +27,4 @@ jobs:
         run: npm run build
 
       - name: Test                    # React Test
-        run: npm run Test
+        run: npm run test
