@@ -12,26 +12,31 @@ describe('계산기 테스트', () => {
   });
 
   it('40 - 31', () => {
-    let container = document.createElement('div');
-    document.body.appendChild(container);
-    act(() => {
-      ReactDOM.render(<Calculator />, container);
-    });
-    let btn_4 = getByText(container, '4');
-    let btn_0 = getByText(container, '0');
-    let btn_3 = getByText(container, '3');
-    let btn_1 = getByText(container, '1');
-    let minus = getByText(container, '-');
-    expect(getByTestId(container, 'display').textContent).toBe('');
+    const utils = render(<Calculator/>);
+    let btn_4 = utils.getByText('4');
+    let btn_0 = utils.getByText('0');
+    let btn_3 = utils.getByText('3');
+    let btn_1 = utils.getByText('1');
+    let minus = utils.getByText('-');
+    expect(utils.getByTestId('display').textContent).toBe('');
     act(() => {
       fireEvent.click(btn_4);
+    })
+    act(() => {
       fireEvent.click(btn_0);
+    })
+    act(() => {
       fireEvent.click(minus);
+    })
+    act(() => {
       fireEvent.click(btn_3);
+    })
+    act(() => {
       fireEvent.click(btn_1);
     })
 
-    expect(getByTestId(container, 'display')).toBe('40-31');
-    document.body.removeChild(container);
+    expect(utils.getByTestId('display').textContent).toBe('40-31');
+
+
   })
 })
