@@ -23,8 +23,5 @@ jobs:
       - name: Install Dependencies    # 의존 파일 설치
         run: npm install
 
-      - name: Build                   # React Build
-        run: npm run build
-
       - name: Test                    # React Test
-        run: npm run test
+        run: npm test
