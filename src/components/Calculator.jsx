@@ -5,8 +5,28 @@ import Panel from "./Panel";
 import Display from "./Display";
 import ButtonGroup from "./ButtonGroup";
 import Button from "./Button";
+import History from "./History";
 
-const Container = styled.div``;
+const Container = styled.div`
+  margin: 30px auto;
+  text-align: center;
+`;
+
+const Box = styled.div`
+  display: inline-block;
+  width: 280px;
+  height: 65px;
+  padding: 10px;
+  border: 2px solid #000;
+  border-radius: 5px;
+  text-align: right;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  margin-bottom: 10px;
+  cursor: pointer;
+  h3 {
+    margin: 0px;
+  }
+`;
 
 const evalFunc = function(string) {
   // eslint-disable-next-line no-new-func
@@ -15,65 +35,69 @@ const evalFunc = function(string) {
 
 class Calculator extends React.Component {
   state = {
-    displayValue: ""
+    displayValue: "",
+    history: []
   };
 
   onClickButton = key => {
-    let { displayValue = "" } = this.state;
+    let { displayValue = "", history = [] } = this.state;
     displayValue = "" + displayValue;
     const lastChar = displayValue.substr(displayValue.length - 1);
     const operatorKeys = ["÷", "×", "-", "+"];
     const proc = {
       AC: () => {
-        this.setState({ displayValue: "" });
+        this.setState({ displayValue: "", history });
       },
       BS: () => {
         if (displayValue.length > 0) {
           displayValue = displayValue.substr(0, displayValue.length - 1);
         }
-        this.setState({ displayValue });
+        this.setState({ displayValue, history });
       },
       "√": () => {
-        displayValue = evalFunc(displayValue.replace("÷", "/").replace("×", "*"));
-        this.setState({ displayValue: Math.sqrt(displayValue)})
+        let result = Math.sqrt(evalFunc(displayValue.replace("÷", "/").replace("×", "*")));
+        history.push({displayValue: "√"+displayValue, result});
+        this.setState({ displayValue: result, history: [...history] })
       },
       "÷": () => {
         if (lastChar !== "" && !operatorKeys.includes(lastChar)) {
-          this.setState({ displayValue: displayValue + "÷" });
+          this.setState({ displayValue: displayValue + "÷", history });
         }
       },
       "×": () => {
         if (lastChar !== "" && !operatorKeys.includes(lastChar)) {
-          this.setState({ displayValue: displayValue + "×" });
+          this.setState({ displayValue: displayValue + "×", history });
         }
       },
       "-": () => {
         if (lastChar !== "" && !operatorKeys.includes(lastChar)) {
-          this.setState({ displayValue: displayValue + "-" });
+          this.setState({ displayValue: displayValue + "-", history });
         }
       },
       "+": () => {
         if (lastChar !== "" && !operatorKeys.includes(lastChar)) {
-          this.setState({ displayValue: displayValue + "+" });
+          this.setState({ displayValue: displayValue + "+", history });
         }
       },
       "=": () => {
         if (lastChar !== "" && operatorKeys.includes(lastChar)) {
           displayValue = displayValue.substr(0, displayValue.length - 1);
         } else if (lastChar !== "") {
-          displayValue = evalFunc(displayValue.replace("÷", "/").replace("×", "*"));
+          let result = evalFunc(displayValue.replace("÷", "/").replace("×", "*"));
+          history.push({displayValue: displayValue, result});
+          displayValue = result;
         }
-        this.setState({ displayValue });
+        this.setState({ displayValue, history: [...history] });
       },
       ".": () => {
         if (lastChar !== "" && !operatorKeys.includes(lastChar) && lastChar !== ".") {
-          this.setState({ displayValue: displayValue + "." });
+          this.setState({ displayValue: displayValue + ".", history });
         }
       },
       "0": () => {
         if (Number(displayValue) !== 0) {
           displayValue += "0";
-          this.setState({ displayValue });
+          this.setState({ displayValue, history });
         }
       }
     };
@@ -133,6 +157,14 @@ class Calculator extends React.Component {
             </Button>
           </ButtonGroup>
         </Panel>
+        <History>
+          {this.state.history.map((x, i) => (
+            <Box onClick={() => this.setState({ displayValue: this.state.history[i].displayValue, history: this.state.history })}>
+              <h3>{x.displayValue}</h3>
+              <h3>{"= " + x.result}</h3>
+            </Box>
+          ))}
+        </History>
       </Container>
     );
   }

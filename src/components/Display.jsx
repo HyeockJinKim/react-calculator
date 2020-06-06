@@ -12,7 +12,7 @@ const Container = styled.div`
     text-align: left;
     font-size: 18px;
     font-weight: bold;
-    padding: 0 15px;
+    padding-left: 15px;
     color: #000;
   }
 `;
@@ -21,7 +21,7 @@ class Display extends React.Component {
   render() {
     return (
       <Container>
-        <div data-display>{this.props.displayValue}</div>
+        <div data-testid="display">{this.props.displayValue}</div>
       </Container>
     );
   }
