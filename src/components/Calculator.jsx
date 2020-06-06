@@ -55,7 +55,7 @@ class Calculator extends React.Component {
         this.setState({ displayValue, history });
       },
       "√": () => {
-        let result = Math.sqrt(evalFunc(displayValue.replace("÷", "/").replace("×", "*")));
+        let result = Math.sqrt(evalFunc(displayValue.replace(/÷/gi, "/").replace(/×/gi, "*").replace(/√/gi, "Math.sqrt")));
         history.splice(0, 0, {displayValue: "√("+displayValue+")", result});
         this.setState({ displayValue: result, history: [...history] })
       },
@@ -83,7 +83,7 @@ class Calculator extends React.Component {
         if (lastChar !== "" && operatorKeys.includes(lastChar)) {
           displayValue = displayValue.substr(0, displayValue.length - 1);
         } else if (lastChar !== "") {
-          let result = evalFunc(displayValue.replace("÷", "/").replace("×", "*").replace("√", "Math.sqrt"));
+          let result = evalFunc(displayValue.replace(/÷/gi, "/").replace(/×/gi, "*").replace(/√/gi, "Math.sqrt"));
           history.splice(0, 0, {displayValue: displayValue, result});
           displayValue = result;
         }
