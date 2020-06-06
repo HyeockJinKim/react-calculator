@@ -15,7 +15,7 @@ class ButtonGroup extends React.Component {
   };
   render() {
     return (
-      <Container data-testid="group" onClick={this.handleClick}>{this.props.children}</Container>
+      <Container onClick={this.handleClick}>{this.props.children}</Container>
     );
   }
 }
